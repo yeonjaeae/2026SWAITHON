@@ -1,0 +1,13 @@
+geopandas==1.2.0
+pyogrio==0.13.0
+shapely==2.2.0
+pyproj==3.8.0
+rasterio==1.5.2
+numpy==2.5.4
+pandas==3.1.1
+fastapi==0.162.0
+uvicorn[standard]==0.54.0
+pydantic==2.14.3
+httpx==0.28.1
+pystac-client==0.9.1
+planetary-computer==1.0.0
