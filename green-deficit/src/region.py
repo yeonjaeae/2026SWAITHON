@@ -1,0 +1,165 @@
+"""드래그한 영역 분석.
+
+입력: 영역 폴리곤 + 모델이 나눈 토지 피복 폴리곤(green / residential / road …), 모두 위경도(EPSG:4326)
+출력: 분류별 면적, 영역 평균 지표, 1인당 녹지 면적, 주택가→녹지 거리, 부족지수 · 우선순위,
+      녹지 확충 우선 구역 폴리곤
+
+면적과 거리는 모두 EPSG:5179(미터)로 바꿔서 계산한다.
+"""
+import math
+
+import numpy as np
+import shapely
+from shapely.geometry import mapping
+
+from . import config, index
+from .store import GridStore
+
+KNOWN_CLASSES = ("green", "residential", "road")
+MAX_SAMPLE_POINTS = 40_000   # 주택가 거리 계산용 샘플 점 개수 상한 (응답 속도 보장)
+PARK_SEARCH_BUFFER = 1_000   # 영역 밖이라도 이 거리 안의 공공 공원은 녹지로 친다
+
+
+def _clean(geom):
+    geom = shapely.make_valid(geom)
+    # make_valid 결과에서 면(폴리곤)만 남김
+    if geom.geom_type == "GeometryCollection":
+        polys = [g for g in geom.geoms if g.geom_type in ("Polygon", "MultiPolygon")]
+        geom = shapely.union_all(polys) if polys else shapely.Polygon()
+    return geom
+
+
+def _sample_points(area_geom, spacing: float):
+    """폴리곤 안에 일정 간격으로 점을 뿌린다 (점마다 녹지까지 거리를 재기 위해)."""
+    if area_geom.is_empty:
+        return np.array([]), spacing
+    spacing = max(spacing, math.sqrt(area_geom.area / MAX_SAMPLE_POINTS))
+    minx, miny, maxx, maxy = area_geom.bounds
+    xs = np.arange(minx + spacing / 2, maxx, spacing)
+    ys = np.arange(miny + spacing / 2, maxy, spacing)
+    xx, yy = np.meshgrid(xs, ys)
+    pts = shapely.points(xx.ravel(), yy.ravel())
+    shapely.prepare(area_geom)
+    return pts[shapely.contains(area_geom, pts)], spacing
+
+
+def _f(v, nd=3):
+    """JSON용 숫자 정리 (NaN → None)."""
+    if v is None:
+        return None
+    v = float(v)
+    return None if not math.isfinite(v) else round(v, nd)
+
+
+def analyze_region(store: GridStore, region_wgs84, landcover: list[tuple[str, object]],
+                   priority_weights: dict | None = None) -> dict:
+    region = _clean(store.to_calc(region_wgs84))
+    if region.is_empty or region.area == 0:
+        raise ValueError("영역 폴리곤이 비어 있습니다")
+    total_area = region.area
+
+    # ── 1. 분류별 면적 (겹치는 부분은 한 번만 세도록 분류별로 합침) ──
+    by_class: dict[str, list] = {}
+    for cls, geom in landcover:
+        cls = (cls or "").strip().lower()
+        cls = cls if cls in KNOWN_CLASSES else "other"
+        g = _clean(store.to_calc(geom)).intersection(region)
+        if not g.is_empty:
+            by_class.setdefault(cls, []).append(g)
+    merged = {cls: shapely.union_all(gs) for cls, gs in by_class.items()}
+    landcover_out = {
+        cls: {"area_m2": _f(merged[cls].area, 1) if cls in merged else 0.0,
+              "ratio": _f(merged[cls].area / total_area) if cls in merged else 0.0}
+        for cls in (*KNOWN_CLASSES, *(c for c in merged if c not in KNOWN_CLASSES))
+    }
+    green = merged.get("green", shapely.Polygon())
+    residential = merged.get("residential", shapely.Polygon())
+
+    # ── 2. 영역에 걸친 격자 값 (겹친 면적 비율로 가중) ──
+    cells = store.cells_intersecting(region)
+    if len(cells) == 0:
+        raise ValueError("영역이 분석 대상 지역(격자) 밖에 있습니다")
+    overlap = shapely.area(shapely.intersection(cells.geometry.values, region))
+    w = overlap / config.CELL_AREA                      # 격자 중 영역에 들어온 비율
+    population = float(np.nansum(cells["pop"].to_numpy() * w))
+
+    def wmean(col):
+        v = cells[col].to_numpy(dtype=float)
+        ok = np.isfinite(v)
+        return float(np.average(v[ok], weights=overlap[ok])) if ok.any() else float("nan")
+
+    avg_ndvi, avg_lst = wmean("ndvi"), wmean("lst")
+    pop_density = population / (total_area / config.CELL_AREA)   # 명/ha (= 격자 1칸당 인구)
+
+    # ── 3. 주택가 → 녹지 거리 (모델 녹지 + 주변 공공 공원) ──
+    parks = store.parks_near(region, PARK_SEARCH_BUFFER)
+    green_all = shapely.union_all([green, *parks.geometry.values])
+    pts, spacing = _sample_points(residential, 20.0)
+    dist = None
+    if len(pts):
+        dist = (shapely.distance(pts, green_all) if not green_all.is_empty
+                else np.full(len(pts), np.inf))
+        finite = np.isfinite(dist)
+        avg_dist = float(dist[finite].mean()) if finite.any() else float("inf")
+        dist_source = "model_residential"
+    else:
+        # 주택가가 없으면 격자 중심→공원 거리로 대신
+        avg_dist = wmean("park_dist")
+        dist_source = "grid_park_dist"
+
+    # ── 4. 부족지수 · 우선순위 (격자와 같은 기준) ──
+    c = index.components(avg_ndvi, avg_lst, pop_density, avg_dist, store.params)
+    c = {k: float(v) for k, v in c.items()}
+    deficit = float(index.deficit_index(c))
+    priority = float(index.priority_score(deficit, c["heat_n"], c["pop_n"], priority_weights))
+
+    green_area = green.area
+    # 모델 결과가 없으면 녹지 면적을 알 수 없으므로 null
+    per_capita = green_area / population if (landcover and population > 0) else None
+
+    # ── 5. 녹지 확충 필요 구역: 기존 녹지를 뺀 영역 중 녹지에서 멀고 뜨거운 곳 ──
+    # 주택가로 자르지 않는다. 주차장·학교·공공시설은 모델이 road/other 로 분류할 수 있어서,
+    # 주택가로 자르면 이후 유휴 공간 교차 분석(PostGIS)에서 빠져 버리기 때문.
+    # 모델 결과가 없어도(landcover 비어 있음) 공공 공원 기준으로 계산된다.
+    candidates = None
+    candidate_area = 0.0
+    need_area = _clean(region.difference(green_all)) if not green_all.is_empty else region
+    npts, nspacing = _sample_points(need_area, 20.0)
+    if len(npts):
+        ndist = (shapely.distance(npts, green_all) if not green_all.is_empty
+                 else np.full(len(npts), np.inf))
+        xs, ys = shapely.get_x(npts), shapely.get_y(npts)
+        keys = zip(np.floor(xs / config.CELL_SIZE).astype(int),
+                   np.floor(ys / config.CELL_SIZE).astype(int))
+        heat_lookup = store.grid["heat_n"]
+        heat = np.array([heat_lookup.get(store.key_to_cell.get(k), np.nan) for k in keys])
+        pick = (ndist >= config.CANDIDATE_MIN_DIST) & (heat >= config.CANDIDATE_MIN_HEAT)
+        if pick.any():
+            h = nspacing / 2
+            boxes = shapely.box(xs[pick] - h, ys[pick] - h, xs[pick] + h, ys[pick] + h)
+            cand = _clean(shapely.union_all(boxes).intersection(need_area))
+            if not cand.is_empty:
+                candidate_area = cand.area
+                if cand.geom_type == "Polygon":          # 형식을 항상 MultiPolygon 으로 통일
+                    cand = shapely.MultiPolygon([cand])
+                candidates = mapping(store.to_web(cand))
+
+    return {
+        "total_area_m2": _f(total_area, 1),
+        "landcover": landcover_out,
+        "grid_cells": int(len(cells)),
+        "avg_ndvi": _f(avg_ndvi),
+        "avg_lst": _f(avg_lst, 2),
+        "population": _f(population, 0),
+        "pop_density_per_ha": _f(pop_density, 1),
+        "green_area_m2": _f(green_area, 1),
+        "green_per_capita_m2": _f(per_capita, 2),
+        "green_per_capita_target_m2": config.GREEN_PER_CAPITA_TARGET,
+        "avg_dist_to_green_m": _f(avg_dist, 1),
+        "dist_source": dist_source,
+        "components": {k: _f(v) for k, v in c.items()},
+        "deficit_index": _f(deficit),
+        "priority_score": _f(priority),
+        "candidate_area_m2": _f(candidate_area, 1),
+        "candidates": candidates,   # GeoJSON (EPSG:4326) 또는 null
+    }
