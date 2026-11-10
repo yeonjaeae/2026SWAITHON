@@ -101,9 +101,9 @@ API 문서(Swagger): http://localhost:8000/docs
 ### 5. 선택 영역 분석 (`src/region.py`)
 요청이 오면 미리 계산한 격자 값으로 그 영역만 계산한다.
 
-1. **토지 피복 면적**: 모델 폴리곤(녹지/주택가/도로)을 영역으로 잘라 분류별 면적·비율
+1. **토지 피복 면적**: 모델 폴리곤(녹지/주택가/도로)을 영역으로 잘라 분류별 면적·비율. 겹치면 녹지 > 도로 > 주택가 순으로 한 분류만
 2. **영역 평균**: 영역에 걸친 칸들을 겹친 면적 비율로 가중해 평균 NDVI·온도, 인구 합계
-3. **녹지까지 거리**: 주택가에 20m 간격으로 점을 찍고 가장 가까운 녹지(모델 녹지 + 주변 1km 공공 공원)까지 평균 거리. 모델 결과가 없으면 칸의 공원 거리로 대신
+3. **녹지까지 거리**: 주택가에 20m 간격으로 점을 찍고 가장 가까운 녹지(모델 녹지 + 주변 1km 공공 공원)까지 평균 거리. 녹지는 1,000㎡ 이상 덩어리만 기준으로 쓴다 (가로수·화단 조각 제외, 면적·비율에는 모두 포함). 모델 결과가 없으면 칸의 공원 거리로 대신
 4. **점수**: 격자와 **같은 정규화 기준**으로 부족지수·우선순위 계산 → 서울 전체와 비교 가능
 5. **녹지 확충 필요 구역**: 기존 녹지를 뺀 영역 중 **녹지에서 250m 이상 떨어지고 열 위험 0.6 이상**인 곳
 
@@ -122,7 +122,7 @@ API 문서(Swagger): http://localhost:8000/docs
 |---|:---:|---|
 | `sw` | ✓ | **S**outh-**W**est(남서쪽) = 사각형 왼쪽 아래 꼭짓점 `{lat, lng}` |
 | `ne` | ✓ | **N**orth-**E**ast(북동쪽) = 사각형 오른쪽 위 꼭짓점 `{lat, lng}` |
-| `landcover` | | 모델 결과. `class`(green / residential / road) + `geometry`(GeoJSON) 목록 |
+| `landcover` | | 모델 결과. GeoJSON **FeatureCollection** (각 Feature의 `properties.class` = green / residential / road). `[{class, geometry}]` 목록도 가능 |
 | `weights` | | 우선순위 가중치. 기본 `{"deficit":0.4,"heat":0.3,"pop":0.3}` |
 
 ```json
@@ -134,6 +134,7 @@ API 문서(Swagger): http://localhost:8000/docs
 
 - 꼭짓점을 반대로 보내도 알아서 정리한다.
 - `landcover` 의 GeoJSON 좌표는 **[경도, 위도]** 순서 (EPSG:4326).
+- 분류끼리 겹쳐도 된다. **녹지 > 도로 > 주택가** 순으로 한 곳은 한 분류로만 센다 (용도지역 주택가 안에 녹지·도로가 들어 있어도 됨). 분류 안 된 빈 곳이 있어도 된다.
 - 사각형이 아닌 영역은 `sw`/`ne` 대신 `region` 에 GeoJSON Polygon 으로 보낼 수 있다.
 
 카카오맵에서 요청 만들기:
@@ -199,7 +200,7 @@ const res = await fetch('http://localhost:8000/api/region/analyze', {
 ## 팀 연동
 
 - **프론트**: `sw`/`ne` 만 보내면 된다. CORS 는 모두 허용되어 있다.
-- **모델**: 결과 폴리곤을 `landcover` 로 넘긴다. 좌표는 GeoJSON EPSG:4326 ([경도, 위도]). 없어도 동작한다.
+- **모델**: 결과 FeatureCollection 을 `landcover` 로 그대로 넘긴다. 좌표는 GeoJSON EPSG:4326 ([경도, 위도]). 없어도 동작한다.
 - **PostGIS**: `candidates` 는 녹지가 필요한 **범위**다. 주택가로 자르지 않았으므로 주차장·학교·공공시설 등 유휴 공간 데이터와 교차(`ST_Intersection`)해 개별 후보지를 뽑는다. 면적은 `ST_Transform(geom, 5179)` 후 계산.
 - **DB 적재**: 격자 결과는 `output/grid_index.gpkg` (레이어 `grid`, EPSG:5179) 한 파일.
 
