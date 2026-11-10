@@ -46,8 +46,10 @@ class RegionRequest(BaseModel):
     ne: LatLng | None = Field(None, description="North-East(북동쪽) = 사각형 오른쪽 위 꼭짓점")
     region: dict | None = Field(None, description="임의 도형 영역. GeoJSON geometry 또는 Feature "
                                                   "(EPSG:4326). sw/ne 를 보내면 생략")
-    landcover: list[LandcoverItem] = Field(default_factory=list,
-                                           description="모델이 나눈 토지 피복 폴리곤")
+    landcover: list[LandcoverItem] | dict = Field(
+        default_factory=list,
+        description="모델이 나눈 토지 피복. GeoJSON FeatureCollection(각 Feature의 properties.class) "
+                    "또는 [{class, geometry}] 목록")
     weights: dict[str, float] | None = Field(None, description='예: {"deficit":0.4,"heat":0.3,"pop":0.3}')
 
 
@@ -58,6 +60,21 @@ def _geom(obj: dict):
         return shape(obj)
     except Exception:
         raise HTTPException(422, "GeoJSON geometry 형식이 아닙니다")
+
+
+def _landcover(lc) -> list[tuple[str, object]]:
+    """FeatureCollection 이든 [{class, geometry}] 목록이든 (분류, 도형) 목록으로."""
+    if isinstance(lc, list):
+        return [(item.cls, _geom(item.geometry)) for item in lc]
+    if lc.get("type") != "FeatureCollection" or not isinstance(lc.get("features"), list):
+        raise HTTPException(422, "landcover 는 GeoJSON FeatureCollection 또는 [{class, geometry}] 목록이어야 합니다")
+    out = []
+    for i, f in enumerate(lc["features"]):
+        cls = (f.get("properties") or {}).get("class")
+        if not cls or not f.get("geometry"):
+            raise HTTPException(422, f"landcover {i}번째 Feature 에 properties.class 또는 geometry 가 없습니다")
+        out.append((cls, _geom(f["geometry"])))
+    return out
 
 
 def _region_geom(req: RegionRequest):
@@ -139,7 +156,7 @@ def region_analyze(req: Annotated[RegionRequest, Body(openapi_examples=REGION_EX
         weights = {**config.PRIORITY_WEIGHTS, **req.weights}
     try:
         return analyze_region(get_store(), _region_geom(req),
-                              [(lc.cls, _geom(lc.geometry)) for lc in req.landcover],
+                              _landcover(req.landcover),
                               weights)
     except ValueError as e:
         raise HTTPException(422, str(e))

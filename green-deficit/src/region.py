@@ -66,7 +66,14 @@ def analyze_region(store: GridStore, region_wgs84, landcover: list[tuple[str, ob
         g = _clean(store.to_calc(geom)).intersection(region)
         if not g.is_empty:
             by_class.setdefault(cls, []).append(g)
-    merged = {cls: shapely.union_all(gs) for cls, gs in by_class.items()}
+    merged = {cls: _clean(shapely.union_all(gs)) for cls, gs in by_class.items()}
+    # 분류끼리 겹치면 한 곳은 한 분류로만 센다: 녹지 > 도로 > 주택가 > 기타
+    # (주택가가 용도지역 기준이면 그 안에 녹지·도로가 통째로 들어 있어서)
+    taken = shapely.Polygon()
+    for cls in ("green", "road", "residential", *(c for c in merged if c not in KNOWN_CLASSES)):
+        if cls in merged:
+            merged[cls] = _clean(merged[cls].difference(taken)) if not taken.is_empty else merged[cls]
+            taken = _clean(shapely.union_all([taken, merged[cls]]))
     landcover_out = {
         cls: {"area_m2": _f(merged[cls].area, 1) if cls in merged else 0.0,
               "ratio": _f(merged[cls].area / total_area) if cls in merged else 0.0}
@@ -92,8 +99,13 @@ def analyze_region(store: GridStore, region_wgs84, landcover: list[tuple[str, ob
     pop_density = population / (total_area / config.CELL_AREA)   # 명/ha (= 격자 1칸당 인구)
 
     # ── 3. 주택가 → 녹지 거리 (모델 녹지 + 주변 공공 공원) ──
+    # 거리 기준이 되는 녹지는 공원과 같은 기준(PARK_MIN_AREA 이상)의 덩어리만 쓴다.
+    # 모델 녹지에는 가로수·화단 같은 수십㎡ 조각이 많아서, 그대로 쓰면 어디서나 "녹지가 가깝다"가 된다.
+    # (녹지 면적·비율·1인당 녹지 면적은 조각까지 모두 센다)
+    green_patches = [p for p in getattr(green, "geoms", [green])
+                     if not p.is_empty and p.area >= config.PARK_MIN_AREA]
     parks = store.parks_near(region, PARK_SEARCH_BUFFER)
-    green_all = shapely.union_all([green, *parks.geometry.values])
+    green_all = shapely.union_all([*green_patches, *parks.geometry.values])
     pts, spacing = _sample_points(residential, 20.0)
     dist = None
     if len(pts):
@@ -123,7 +135,8 @@ def analyze_region(store: GridStore, region_wgs84, landcover: list[tuple[str, ob
     # 모델 결과가 없어도(landcover 비어 있음) 공공 공원 기준으로 계산된다.
     candidates = None
     candidate_area = 0.0
-    need_area = _clean(region.difference(green_all)) if not green_all.is_empty else region
+    existing_green = _clean(shapely.union_all([green, green_all]))   # 이미 녹지인 곳은 모두 제외
+    need_area = _clean(region.difference(existing_green)) if not existing_green.is_empty else region
     npts, nspacing = _sample_points(need_area, 20.0)
     if len(npts):
         ndist = (shapely.distance(npts, green_all) if not green_all.is_empty
