@@ -1,0 +1,15 @@
+{
+  "source": "request",
+  "count": 0,
+  "recommendations": [],
+  "scoring_weights": {
+    "deficit": 0.45,
+    "area": 0.25,
+    "impervious": 0.2,
+    "feasibility": 0.1
+  },
+  "warnings": [
+    "누락 지표는 0으로 간주하지 않고 나머지 가중치 합으로 나눕니다. score_data_coverage를 함께 비교하세요.",
+    "후보지 경계는 editable 확정 영역이 아닙니다. 실현 가능성·불투수율은 토지피복 3분류에서 자동 추정하지 않습니다."
+  ]
+}

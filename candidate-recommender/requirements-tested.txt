@@ -1,0 +1,11 @@
+# Tested direct packages; Python 3.15 / macOS arm64
+fastapi==0.162.2
+pydantic==2.14.3
+uvicorn==0.54.0
+shapely==2.2.0
+pyproj==3.8.0
+httpx==0.28.1
+pytest==9.2.0
+geopandas==1.2.0
+psycopg==3.3.8
+psycopg-binary==3.3.8
