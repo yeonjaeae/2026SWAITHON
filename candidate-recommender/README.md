@@ -192,4 +192,3 @@ DB는 시설 조회만 담당하고 교차·면적·점수는 파일 방식과 �
 | examples/ | 요청·응답·후보지·가상 editable·실제 지역 분석 예시 |
 | tests/ | 자동 검증 |
 | sql/schema.sql | 선택적 PostGIS 테이블 |
-| TEAM_REPLY.md | 팀원에게 보낼 답장 초안 |
