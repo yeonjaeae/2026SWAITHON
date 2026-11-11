@@ -51,6 +51,12 @@ class RegionRequest(BaseModel):
         description="모델이 나눈 토지 피복. GeoJSON FeatureCollection(각 Feature의 properties.class) "
                     "또는 [{class, geometry}] 목록")
     weights: dict[str, float] | None = Field(None, description='예: {"deficit":0.4,"heat":0.3,"pop":0.3}')
+    candidate_min_dist: float | None = Field(
+        None, ge=0, le=1000,
+        description="녹지 확충 필요 구역 기준: 녹지에서 이 거리(m) 이상. 생략하면 150. 낮출수록 넓어짐")
+    candidate_min_heat: float | None = Field(
+        None, ge=0, le=1,
+        description="녹지 확충 필요 구역 기준: 열 위험(0~1) 이 값 이상. 생략하면 0.5. 낮출수록 넓어짐")
 
 
 def _geom(obj: dict):
@@ -103,6 +109,7 @@ REGION_DOC = """
 | `ne` | ✓ | **N**orth-**E**ast · 사각형 오른쪽 위 꼭짓점 `{lat, lng}` |
 | `landcover` | | 모델 결과 (green / residential / road 폴리곤) |
 | `weights` | | 우선순위 가중치 · 기본 deficit 0.4, heat 0.3, pop 0.3 |
+| `candidate_min_dist` · `candidate_min_heat` | | 녹지 확충 필요 구역 기준 · 기본 150m, 0.5 (낮출수록 넓어짐) |
 
 `lat` 위도, `lng` 경도 · 카카오맵 `getSouthWest()` · `getNorthEast()` 값을 그대로 사용
 
@@ -157,6 +164,6 @@ def region_analyze(req: Annotated[RegionRequest, Body(openapi_examples=REGION_EX
     try:
         return analyze_region(get_store(), _region_geom(req),
                               _landcover(req.landcover),
-                              weights)
+                              weights, req.candidate_min_dist, req.candidate_min_heat)
     except ValueError as e:
         raise HTTPException(422, str(e))

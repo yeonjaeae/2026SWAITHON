@@ -52,7 +52,11 @@ def _f(v, nd=3):
 
 
 def analyze_region(store: GridStore, region_wgs84, landcover: list[tuple[str, object]],
-                   priority_weights: dict | None = None) -> dict:
+                   priority_weights: dict | None = None,
+                   candidate_min_dist: float | None = None,
+                   candidate_min_heat: float | None = None) -> dict:
+    min_dist = config.CANDIDATE_MIN_DIST if candidate_min_dist is None else candidate_min_dist
+    min_heat = config.CANDIDATE_MIN_HEAT if candidate_min_heat is None else candidate_min_heat
     region = _clean(store.to_calc(region_wgs84))
     if region.is_empty or region.area == 0:
         raise ValueError("영역 폴리곤이 비어 있습니다")
@@ -146,7 +150,7 @@ def analyze_region(store: GridStore, region_wgs84, landcover: list[tuple[str, ob
                    np.floor(ys / config.CELL_SIZE).astype(int))
         heat_lookup = store.grid["heat_n"]
         heat = np.array([heat_lookup.get(store.key_to_cell.get(k), np.nan) for k in keys])
-        pick = (ndist >= config.CANDIDATE_MIN_DIST) & (heat >= config.CANDIDATE_MIN_HEAT)
+        pick = (ndist >= min_dist) & (heat >= min_heat)
         if pick.any():
             h = nspacing / 2
             boxes = shapely.box(xs[pick] - h, ys[pick] - h, xs[pick] + h, ys[pick] + h)
@@ -174,5 +178,6 @@ def analyze_region(store: GridStore, region_wgs84, landcover: list[tuple[str, ob
         "deficit_index": _f(deficit),
         "priority_score": _f(priority),
         "candidate_area_m2": _f(candidate_area, 1),
+        "candidate_criteria": {"min_dist_m": min_dist, "min_heat": min_heat},
         "candidates": candidates,   # GeoJSON (EPSG:4326) 또는 null
     }
