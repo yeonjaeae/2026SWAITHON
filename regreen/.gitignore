@@ -1,0 +1,4 @@
+# 각자 컴퓨터에서 생기는 것
+backend/ai/cache/
+backend/**/var/
+frontend/dist/

@@ -1,0 +1,164 @@
+{
+  "source_file": "ai/residential.geojson",
+  "source_sha256": "bf115b187cf8fbaf4200375fa691466055ef231e0d05667b246c9a71b199fd96",
+  "ai_source_sha256": "6d4795ca997536100cb9edae6bd570debd713f329c08dd4f8fd0836408c64340",
+  "feature_count": 6874,
+  "bounds_wgs84": [
+    126.79861593757215,
+    37.43369833201735,
+    127.18310471544895,
+    37.691542556638865
+  ],
+  "invalid_or_empty_count": 18,
+  "normalization_passed": 6856,
+  "failures": [
+    {
+      "index": 66,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 310,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 1630,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 1727,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 1878,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 1948,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 1984,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 2150,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 2965,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 3603,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 3774,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 4254,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 4521,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 4665,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 5100,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 5242,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 6410,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    },
+    {
+      "index": 6608,
+      "reason": "feature 0: 유효하지 않은 경계입니다. 원본 확인 후 repair=true를 명시하세요."
+    }
+  ],
+  "meaning": "지정 주거지역 도형의 형식 검증. 실제 후보 시설, editable 또는 현황 정확성 검증이 아님.",
+  "explicit_repair_validated": [
+    {
+      "index": 66,
+      "output_geometry_type": "Polygon"
+    },
+    {
+      "index": 310,
+      "output_geometry_type": "Polygon"
+    },
+    {
+      "index": 1630,
+      "output_geometry_type": "MultiPolygon"
+    },
+    {
+      "index": 1727,
+      "output_geometry_type": "MultiPolygon"
+    },
+    {
+      "index": 1878,
+      "output_geometry_type": "Polygon"
+    },
+    {
+      "index": 1948,
+      "output_geometry_type": "Polygon"
+    },
+    {
+      "index": 1984,
+      "output_geometry_type": "Polygon"
+    },
+    {
+      "index": 2150,
+      "output_geometry_type": "Polygon"
+    },
+    {
+      "index": 2965,
+      "output_geometry_type": "Polygon"
+    },
+    {
+      "index": 3603,
+      "output_geometry_type": "Polygon"
+    },
+    {
+      "index": 3774,
+      "output_geometry_type": "MultiPolygon"
+    },
+    {
+      "index": 4254,
+      "output_geometry_type": "MultiPolygon"
+    },
+    {
+      "index": 4521,
+      "output_geometry_type": "Polygon"
+    },
+    {
+      "index": 4665,
+      "output_geometry_type": "MultiPolygon"
+    },
+    {
+      "index": 5100,
+      "output_geometry_type": "MultiPolygon"
+    },
+    {
+      "index": 5242,
+      "output_geometry_type": "Polygon"
+    },
+    {
+      "index": 6410,
+      "output_geometry_type": "Polygon"
+    },
+    {
+      "index": 6608,
+      "output_geometry_type": "MultiPolygon"
+    }
+  ],
+  "repair_note": "복구 후 도형 유효성만 확인. 실제 지적/현황 경계와 일치한다는 의미가 아님."
+}
