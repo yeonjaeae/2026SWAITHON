@@ -1,0 +1,4 @@
+# Shared by green-deficit (8000), candidate-recommender-v2 (8001), green-design-backend (8002)
+# AI server (8003) is heavy: install ai/requirements.txt separately
+-r green-deficit/requirements.txt
+-r candidate-recommender-v2/requirements.txt

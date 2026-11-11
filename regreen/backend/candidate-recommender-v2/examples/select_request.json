@@ -1,0 +1,192 @@
+{
+  "candidate_id": "candidate_f51b0827641c4073488e",
+  "recommendations": [
+    {
+      "candidate_id": "candidate_f51b0827641c4073488e",
+      "site_id": "demo_parking",
+      "name": "가상 주차장 A",
+      "site_type": "parking_lot",
+      "address": null,
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.96349999999998,
+              37.5455
+            ],
+            [
+              126.96349999999998,
+              37.545000000000016
+            ],
+            [
+              126.96310000000001,
+              37.545000000169395
+            ],
+            [
+              126.96310000000001,
+              37.5455
+            ],
+            [
+              126.963,
+              37.545500000000004
+            ],
+            [
+              126.96349999999998,
+              37.5455
+            ]
+          ]
+        ]
+      },
+      "geometry_crs": "EPSG:4326",
+      "area_m2": 1960.185264,
+      "original_site_area_m2": 2450.231501,
+      "source": "synthetic_demo_not_real_site",
+      "is_demo": true,
+      "green_deficit_score": 0.65,
+      "green_deficit_source": "region_average_fallback",
+      "grid_coverage_ratio": 0.0,
+      "impervious_ratio": 0.9,
+      "feasibility_score": null,
+      "total_score": 0.802778,
+      "score_components": {
+        "deficit": 0.65,
+        "area": 1.0,
+        "impervious": 0.9,
+        "feasibility": null
+      },
+      "score_data_coverage": 0.9,
+      "reasons": [
+        "후보지 교차 면적 1960.19㎡",
+        "점수에 사용된 항목의 가중치 합 0.90",
+        "녹지 부족지수 0.650 (출처: region_average_fallback)",
+        "입력 데이터의 불투수율 90.0%"
+      ],
+      "recommendation_text": "후보지 교차 면적 1960.19㎡; 점수에 사용된 항목의 가중치 합 0.90; 녹지 부족지수 0.650 (출처: region_average_fallback); 입력 데이터의 불투수율 90.0%. 실제 이용 현황과 녹지화 가능 여부는 별도 확인이 필요합니다.",
+      "editable_status": "pending_ai_review",
+      "rank": 1
+    },
+    {
+      "candidate_id": "candidate_f1a0cf3ce4b6d9cbc167",
+      "site_id": "demo_school",
+      "name": "가상 학교 외부공간 B",
+      "site_type": "schoolyard",
+      "address": null,
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.96479999999998,
+              37.5462
+            ],
+            [
+              126.96479999999998,
+              37.5455
+            ],
+            [
+              126.964,
+              37.5455
+            ],
+            [
+              126.964,
+              37.5462
+            ],
+            [
+              126.96479999999998,
+              37.5462
+            ]
+          ]
+        ]
+      },
+      "geometry_crs": "EPSG:4326",
+      "area_m2": 5488.473826,
+      "original_site_area_m2": 5488.473826,
+      "source": "synthetic_demo_not_real_site",
+      "is_demo": true,
+      "green_deficit_score": 0.65,
+      "green_deficit_source": "region_average_fallback",
+      "grid_coverage_ratio": 0.0,
+      "impervious_ratio": null,
+      "feasibility_score": null,
+      "total_score": 0.775,
+      "score_components": {
+        "deficit": 0.65,
+        "area": 1.0,
+        "impervious": null,
+        "feasibility": null
+      },
+      "score_data_coverage": 0.7,
+      "reasons": [
+        "후보지 교차 면적 5488.47㎡",
+        "점수에 사용된 항목의 가중치 합 0.70",
+        "녹지 부족지수 0.650 (출처: region_average_fallback)"
+      ],
+      "recommendation_text": "후보지 교차 면적 5488.47㎡; 점수에 사용된 항목의 가중치 합 0.70; 녹지 부족지수 0.650 (출처: region_average_fallback). 실제 이용 현황과 녹지화 가능 여부는 별도 확인이 필요합니다.",
+      "editable_status": "pending_ai_review",
+      "rank": 2
+    },
+    {
+      "candidate_id": "candidate_57ff1b2b918eff18d224",
+      "site_id": "demo_plaza",
+      "name": "가상 광장 C",
+      "site_type": "public_plaza",
+      "address": null,
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.96539999999999,
+              37.54639999999999
+            ],
+            [
+              126.96539999999999,
+              37.54600000000001
+            ],
+            [
+              126.96500000000002,
+              37.546
+            ],
+            [
+              126.96500000000002,
+              37.54639999999999
+            ],
+            [
+              126.96539999999999,
+              37.54639999999999
+            ]
+          ]
+        ]
+      },
+      "geometry_crs": "EPSG:4326",
+      "area_m2": 1568.127881,
+      "original_site_area_m2": 1568.127882,
+      "source": "synthetic_demo_not_real_site",
+      "is_demo": true,
+      "green_deficit_score": 0.65,
+      "green_deficit_source": "region_average_fallback",
+      "grid_coverage_ratio": 0.0,
+      "impervious_ratio": 0.8,
+      "feasibility_score": 0.6,
+      "total_score": 0.7625,
+      "score_components": {
+        "deficit": 0.65,
+        "area": 1.0,
+        "impervious": 0.8,
+        "feasibility": 0.6
+      },
+      "score_data_coverage": 1.0,
+      "reasons": [
+        "후보지 교차 면적 1568.13㎡",
+        "점수에 사용된 항목의 가중치 합 1.00",
+        "녹지 부족지수 0.650 (출처: region_average_fallback)",
+        "입력 데이터의 불투수율 80.0%",
+        "입력 데이터의 실현 가능성 점수 0.600"
+      ],
+      "recommendation_text": "후보지 교차 면적 1568.13㎡; 점수에 사용된 항목의 가중치 합 1.00; 녹지 부족지수 0.650 (출처: region_average_fallback); 입력 데이터의 불투수율 80.0%; 입력 데이터의 실현 가능성 점수 0.600. 실제 이용 현황과 녹지화 가능 여부는 별도 확인이 필요합니다.",
+      "editable_status": "pending_ai_review",
+      "rank": 3
+    }
+  ]
+}

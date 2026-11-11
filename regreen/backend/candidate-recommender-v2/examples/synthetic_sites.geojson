@@ -1,0 +1,122 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.963,
+              37.545
+            ],
+            [
+              126.9635,
+              37.545
+            ],
+            [
+              126.9635,
+              37.5455
+            ],
+            [
+              126.963,
+              37.5455
+            ],
+            [
+              126.963,
+              37.545
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "site_id": "demo_parking",
+        "name": "가상 주차장 A",
+        "site_type": "parking_lot",
+        "source": "synthetic_demo_not_real_site",
+        "is_demo": true,
+        "impervious_ratio": 0.9,
+        "feasibility_score": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.964,
+              37.5455
+            ],
+            [
+              126.9648,
+              37.5455
+            ],
+            [
+              126.9648,
+              37.5462
+            ],
+            [
+              126.964,
+              37.5462
+            ],
+            [
+              126.964,
+              37.5455
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "site_id": "demo_school",
+        "name": "가상 학교 외부공간 B",
+        "site_type": "schoolyard",
+        "source": "synthetic_demo_not_real_site",
+        "is_demo": true,
+        "impervious_ratio": null,
+        "feasibility_score": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.965,
+              37.546
+            ],
+            [
+              126.9654,
+              37.546
+            ],
+            [
+              126.9654,
+              37.5464
+            ],
+            [
+              126.965,
+              37.5464
+            ],
+            [
+              126.965,
+              37.546
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "site_id": "demo_plaza",
+        "name": "가상 광장 C",
+        "site_type": "public_plaza",
+        "source": "synthetic_demo_not_real_site",
+        "is_demo": true,
+        "impervious_ratio": 0.8,
+        "feasibility_score": 0.6
+      }
+    }
+  ]
+}

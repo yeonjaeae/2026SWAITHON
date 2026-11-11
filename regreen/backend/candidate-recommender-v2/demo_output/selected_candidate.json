@@ -1,0 +1,50 @@
+{
+  "candidate_id": "candidate_f51b0827641c4073488e",
+  "area_m2": 1960.185264,
+  "geometry_crs": "EPSG:4326",
+  "feature": {
+    "type": "Feature",
+    "id": "candidate_f51b0827641c4073488e",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            126.96349999999998,
+            37.5455
+          ],
+          [
+            126.96349999999998,
+            37.545000000000016
+          ],
+          [
+            126.96310000000001,
+            37.545000000169395
+          ],
+          [
+            126.96310000000001,
+            37.5455
+          ],
+          [
+            126.963,
+            37.545500000000004
+          ],
+          [
+            126.96349999999998,
+            37.5455
+          ]
+        ]
+      ]
+    },
+    "properties": {
+      "site_id": "demo_parking",
+      "name": "가상 주차장 A",
+      "site_type": "parking_lot",
+      "source": "synthetic_demo_not_real_site",
+      "is_demo": true,
+      "candidate_id": "candidate_f51b0827641c4073488e",
+      "area_m2": 1960.185264,
+      "editable_status": "pending_ai_review"
+    }
+  }
+}
