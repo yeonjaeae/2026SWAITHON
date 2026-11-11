@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RE : GREEN · 결과 비교</title>
+  <link rel="stylesheet" href="css/common.css">
+  <script src="js/common.js" defer></script>
+  <script src="js/result.js" defer></script>
+</head>
+<body data-page="result">
+<header><a class="brand" href="index.html"><i>↗</i> RE : GREEN</a><nav aria-label="주요 화면"><a href="index.html">01 공간 탐색</a><a href="design.html">02 공존 설계</a><a href="result.html">03 결과 비교</a><a href="report.html">04 리포트</a></nav><span class="badge">프론트엔드 양식</span></header>
+<main>
+<div class="heading"><span>03 / RESULT</span><h1>내가 그린 녹지 계획을 확인하세요.</h1><p>자동 생성 이미지가 아닌, 직접 표시한 영역의 미리보기입니다.</p></div>
+<div id="emptyResult" class="empty" hidden>아직 그린 설계가 없습니다. <a href="design.html">설계하러 가기 →</a></div>
+<div id="resultContent"><h2 id="resultName"></h2><div class="comparison"><figure class="panel"><figcaption>Before · 선택한 배경</figcaption><svg id="beforeMap" viewBox="0 0 1000 700"></svg></figure><figure class="panel"><figcaption>After · 직접 표시한 설계 영역</figcaption><svg id="afterMap" viewBox="0 0 1000 700"></svg></figure></div>
+<div class="panel padded"><h2>설계 조건</h2><p id="summary"></p><p id="resultMemo"></p><h2>환경 효과 분석</h2><div class="metrics"><div><span>녹지 면적</span><strong>— ㎡</strong></div><div><span>식재 가능 수목</span><strong>— 주</strong></div><div><span>연간 탄소흡수량</span><strong>— kg CO₂</strong></div><div><span>예상 조성 비용</span><strong>— 원</strong></div></div><p class="muted">분석 결과 연결 전입니다. 실제 환경 효과·비용을 계산하지 않습니다.</p></div>
+<p class="actions"><a class="button secondary" href="design.html">설계 수정</a><a class="button" href="report.html">최종 리포트 보기 →</a></p></div>
+</main>
+<footer>RE : GREEN · 공간과 일상이 함께하는 녹지 설계</footer>
+</body>
+</html>

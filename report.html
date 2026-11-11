@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RE : GREEN · 최종 리포트</title>
+  <link rel="stylesheet" href="css/common.css">
+  <script src="js/common.js" defer></script>
+  <script src="js/report.js" defer></script>
+</head>
+<body data-page="report">
+<header><a class="brand" href="index.html"><i>↗</i> RE : GREEN</a><nav aria-label="주요 화면"><a href="index.html">01 공간 탐색</a><a href="design.html">02 공존 설계</a><a href="result.html">03 결과 비교</a><a href="report.html">04 리포트</a></nav><span class="badge">프론트엔드 양식</span></header>
+<main>
+<div class="heading no-print"><span>04 / REPORT</span><h1>설계 내용을 한눈에.</h1><p>직접 그린 영역과 입력한 조건을 정리한 프론트엔드 리포트입니다.</p></div>
+<div id="emptyReport" class="empty" hidden>설계 내용이 없습니다. <a href="design.html">설계하러 가기 →</a></div>
+<article id="reportContent" class="panel padded"><small>RE : GREEN · 설계 리포트</small><h1 id="reportName"></h1><p id="reportDate" class="muted"></p><svg id="reportMap" class="report-map" viewBox="0 0 1000 700"></svg><h2>입력한 설계 조건</h2><p id="summary"></p><p id="reportMemo"></p><h2>환경 효과 분석</h2><div class="metrics"><div><span>녹지 면적</span><strong>— ㎡</strong></div><div><span>식재 가능 수목</span><strong>— 주</strong></div><div><span>연간 탄소흡수량</span><strong>— kg CO₂</strong></div><div><span>예상 조성 비용</span><strong>— 원</strong></div></div><p class="muted">분석 결과 연결 전입니다. 실제 환경 효과·비용을 계산하지 않습니다.</p><p class="muted">화면의 사각형은 사용자가 표시한 계획 영역이며 실제 경계·시공 가능 여부는 검증되지 않았습니다.</p>
+<div class="actions no-print"><a class="button secondary" href="design.html">설계 수정</a><button id="download">설계 JSON 다운로드</button><button id="print" class="secondary">인쇄 / PDF 저장</button></div></article>
+</main>
+<footer>RE : GREEN · 공간과 일상이 함께하는 녹지 설계</footer>
+</body>
+</html>

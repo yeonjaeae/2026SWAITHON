@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RE : GREEN · 공존 설계</title>
+  <link rel="stylesheet" href="css/common.css">
+  <script src="js/common.js" defer></script>
+  <script src="js/design.js" defer></script>
+</head>
+<body data-page="design">
+<header><a class="brand" href="index.html"><i>↗</i> RE : GREEN</a><nav aria-label="주요 화면"><a href="index.html">01 공간 탐색</a><a href="design.html">02 공존 설계</a><a href="result.html">03 결과 비교</a><a href="report.html">04 리포트</a></nav><span class="badge"></span></header>
+<main>
+<div class="heading"><span>02 / DESIGN</span><h1>남길 공간은 남기고, 초록은 직접 그려요.</h1><p>녹화 영역과 보존 영역을 지도 위에 사각형으로 표시하세요.</p></div>
+<div id="noSelection" class="empty" hidden>선택된 범위가 없습니다. <a href="index.html">지도에서 범위 선택하기 →</a></div>
+<div class="layout" id="designWorkspace"><section class="panel">
+  <div class="toolbar"><button id="greenTool" aria-pressed="true">녹화 영역 그리기</button><button id="protectTool" class="secondary" aria-pressed="false">보존 영역 그리기</button><button id="undo" class="secondary">되돌리기</button><button id="clear" class="secondary">전체 지우기</button></div>
+  <svg id="designMap" class="drawing-map" viewBox="0 0 1000 700" role="img" aria-label="드래그하여 녹화 및 보존 사각형 그리기"></svg>
+  <p id="drawStatus" class="caption" role="status">녹화할 곳의 한쪽 모서리에서 반대쪽 모서리까지 드래그하세요.</p>
+  <div class="legend"><span>🟩 녹화 영역</span><span>🟨 보존 영역 · 겹치면 보존 우선</span></div>
+  <div class="upload"><label>배경 이미지 바꾸기 (선택)<input id="sitePhoto" type="file" accept="image/*"></label><p class="muted">선택한 지도 대신 현장·항공사진을 올릴 수 있습니다. 변경 시 그린 영역은 초기화됩니다.</p></div>
+</section><aside class="panel padded">
+  <h2 id="designName">설계 대상</h2>
+  <div class="ratio"><small>직접 표시한 녹화 비율</small><strong id="greenRatio">0%</strong><span id="protectRatio">보존 영역 0%</span></div>
+  <p class="muted">비율은 화면 전체 대비 표시 영역 기준입니다. 중복은 한 번만 세고 보존 영역은 제외합니다. 실제 토지 면적이 아닙니다.</p>
+  <h3>식생 유형</h3><div class="checks"><label><input type="checkbox" name="vegetation" value="잔디"> 잔디</label><label><input type="checkbox" name="vegetation" value="관목"> 관목</label><label><input type="checkbox" name="vegetation" value="교목"> 교목</label><label><input type="checkbox" name="vegetation" value="투수블록"> 투수블록</label></div>
+  <h3>공존 조건</h3><div class="checks"><label><input type="checkbox" name="conditions" value="보행로 보존"> 보행로 보존</label><label><input type="checkbox" name="conditions" value="출입구 확보"> 출입구 확보</label><label><input type="checkbox" name="conditions" value="주차 공간 유지"> 주차 공간 유지</label><label><input type="checkbox" name="conditions" value="휴식 공간 확보"> 휴식 공간 확보</label></div>
+  <label>설계 메모<textarea id="memo" rows="3" placeholder="추가로 반영할 내용을 입력하세요."></textarea></label>
+  <h3>표시한 영역 <span id="rectCount" class="pill">0개</span></h3><ul id="rectList" class="rect-list"></ul>
+  <button id="viewResult" disabled>설계 결과 확인 →</button>
+</aside></div>
+</main>
+<footer>RE : GREEN · 공간과 일상이 함께하는 녹지 설계</footer>
+</body>
+</html>
