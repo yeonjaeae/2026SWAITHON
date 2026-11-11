@@ -1,0 +1,901 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Re:Green 후보지 추천 API",
+    "version": "2.0.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ready": {
+      "get": {
+        "summary": "Ready",
+        "operationId": "ready_ready_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/normalize": {
+      "post": {
+        "summary": "Normalize",
+        "operationId": "normalize_data_normalize_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NormalizeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/integrations/ai/normalize-landcover": {
+      "post": {
+        "summary": "Normalize Ai",
+        "operationId": "normalize_ai_integrations_ai_normalize_landcover_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdaptRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/integrations/ai/landcover": {
+      "post": {
+        "summary": "Ai Landcover",
+        "operationId": "ai_landcover_integrations_ai_landcover_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_ai_landcover_integrations_ai_landcover_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recommendations/from-region-analysis": {
+      "post": {
+        "summary": "Recommendations",
+        "operationId": "recommendations_recommendations_from_region_analysis_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recommendations/demo": {
+      "get": {
+        "summary": "Demo",
+        "operationId": "demo_recommendations_demo_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 10,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "min_area_m2",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "default": 80,
+              "title": "Min Area M2"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recommendations/select": {
+      "post": {
+        "summary": "Select",
+        "operationId": "select_recommendations_select_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Selection"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recommendations/design-handoff": {
+      "post": {
+        "summary": "Handoff",
+        "operationId": "handoff_recommendations_design_handoff_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DesignHandoff"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdaptRequest": {
+        "properties": {
+          "region": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Region"
+          },
+          "feature_collection": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Feature Collection"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "region",
+          "feature_collection"
+        ],
+        "title": "AdaptRequest"
+      },
+      "Body_ai_landcover_integrations_ai_landcover_post": {
+        "properties": {
+          "image": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "Image"
+          },
+          "world_file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "World File"
+          },
+          "region": {
+            "type": "string",
+            "title": "Region"
+          },
+          "image_crs": {
+            "type": "string",
+            "title": "Image Crs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "image",
+          "world_file",
+          "region",
+          "image_crs"
+        ],
+        "title": "Body_ai_landcover_integrations_ai_landcover_post"
+      },
+      "DesignHandoff": {
+        "properties": {
+          "candidate": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidate"
+          },
+          "recommendation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommendation Id"
+          },
+          "candidate_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidate Id"
+          },
+          "protected_geometries": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "title": "Protected Geometries"
+          },
+          "editable": {
+            "$ref": "#/components/schemas/Editable"
+          },
+          "green_ratio": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Green Ratio"
+          },
+          "vegetation": {
+            "$ref": "#/components/schemas/Vegetation"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "editable",
+          "green_ratio",
+          "vegetation"
+        ],
+        "title": "DesignHandoff"
+      },
+      "Editable": {
+        "properties": {
+          "review_status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "reviewed"
+            ],
+            "title": "Review Status",
+            "default": "pending"
+          },
+          "candidate_id": {
+            "type": "string",
+            "title": "Candidate Id"
+          },
+          "geometry_crs": {
+            "type": "string",
+            "const": "EPSG:4326",
+            "title": "Geometry Crs",
+            "default": "EPSG:4326"
+          },
+          "editable_geometry": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Editable Geometry"
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Source"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "candidate_id",
+          "editable_geometry",
+          "source"
+        ],
+        "title": "Editable"
+      },
+      "Grid": {
+        "properties": {
+          "grid_id": {
+            "type": "string",
+            "title": "Grid Id"
+          },
+          "geometry": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Geometry"
+          },
+          "deficit_index": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Deficit Index"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "grid_id",
+          "geometry",
+          "deficit_index"
+        ],
+        "title": "Grid"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Landcover": {
+        "properties": {
+          "class": {
+            "type": "string",
+            "enum": [
+              "green",
+              "road",
+              "residential"
+            ],
+            "title": "Class"
+          },
+          "geometry": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Geometry"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "class",
+          "geometry"
+        ],
+        "title": "Landcover"
+      },
+      "NormalizeRequest": {
+        "properties": {
+          "geojson": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Geojson"
+          },
+          "source_crs": {
+            "type": "string",
+            "title": "Source Crs"
+          },
+          "repair": {
+            "type": "boolean",
+            "title": "Repair",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "geojson",
+          "source_crs"
+        ],
+        "title": "NormalizeRequest"
+      },
+      "RegionAnalysis": {
+        "properties": {
+          "candidates": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidates"
+          },
+          "deficit_index": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deficit Index"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "candidates"
+        ],
+        "title": "RegionAnalysis"
+      },
+      "Request": {
+        "properties": {
+          "region_analysis": {
+            "$ref": "#/components/schemas/RegionAnalysis"
+          },
+          "sites": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Site"
+                },
+                "type": "array",
+                "maxItems": 5000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sites"
+          },
+          "grids": {
+            "items": {
+              "$ref": "#/components/schemas/Grid"
+            },
+            "type": "array",
+            "maxItems": 5000,
+            "title": "Grids"
+          },
+          "landcover": {
+            "items": {
+              "$ref": "#/components/schemas/Landcover"
+            },
+            "type": "array",
+            "maxItems": 5000,
+            "title": "Landcover"
+          },
+          "ai_landcover": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ai Landcover"
+          },
+          "protected_geometries": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "title": "Protected Geometries"
+          },
+          "min_area_m2": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Min Area M2",
+            "default": 80
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "default": 10
+          },
+          "allowed_site_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Allowed Site Types"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "region_analysis"
+        ],
+        "title": "Request"
+      },
+      "Selection": {
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "title": "Candidate Id"
+          },
+          "recommendations": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array",
+                "maxItems": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommendations"
+          },
+          "recommendation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommendation Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "candidate_id"
+        ],
+        "title": "Selection"
+      },
+      "Site": {
+        "properties": {
+          "site_id": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Site Id"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Name"
+          },
+          "site_type": {
+            "type": "string",
+            "title": "Site Type"
+          },
+          "geometry": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Geometry"
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Source",
+            "description": "데이터 기관/파일/객체 ID 등 출처"
+          },
+          "is_demo": {
+            "type": "boolean",
+            "title": "Is Demo",
+            "default": false
+          },
+          "is_green": {
+            "type": "boolean",
+            "title": "Is Green",
+            "default": false
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "impervious_ratio": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Impervious Ratio"
+          },
+          "feasibility_score": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feasibility Score"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "site_id",
+          "name",
+          "site_type",
+          "geometry",
+          "source"
+        ],
+        "title": "Site"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "Vegetation": {
+        "properties": {
+          "grass": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Grass"
+          },
+          "shrub": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Shrub"
+          },
+          "tree": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Tree"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "grass",
+          "shrub",
+          "tree"
+        ],
+        "title": "Vegetation"
+      }
+    }
+  }
+}
