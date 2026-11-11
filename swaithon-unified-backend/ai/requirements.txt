@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+python-multipart
+httpx
+torch
+transformers==4.57.3
+huggingface-hub==0.36.2
+accelerate
+pillow
+numpy
+opencv-python-headless
+shapely
+pyproj
+osmnx
