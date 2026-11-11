@@ -1,0 +1,10 @@
+# green-deficit API 실행에 필요한 것만 (데이터 받기·분석용 rasterio, pystac 등은 제외)
+fastapi==0.162.0
+uvicorn[standard]==0.54.0
+pydantic==2.14.3
+geopandas==1.2.0
+pyogrio==0.13.0
+shapely==2.2.0
+pyproj==3.8.0
+numpy==2.5.4
+pandas==3.1.1

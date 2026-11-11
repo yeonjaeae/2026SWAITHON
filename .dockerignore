@@ -1,0 +1,9 @@
+.git
+**/.venv
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.env
+ai
+green-deficit/data
+candidate-recommender-v2/var
